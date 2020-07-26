@@ -13,7 +13,10 @@ class App extends Component {
      showPersons : false
    }
    deletePersonHandler = (personIndex)=>{
-        const persons = this.state.persons;
+      //always make a copy before mutating to avoid sideEffects
+      // either slice or spread a new copy of your state arr obj
+       //const persons = this.state.persons.slice();
+        const persons = [...this.state.persons];
         persons.splice(personIndex,1);
         this.setState({persons : persons});
    }
