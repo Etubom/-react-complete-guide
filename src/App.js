@@ -20,12 +20,20 @@ class App extends Component {
         persons.splice(personIndex,1);
         this.setState({persons : persons});
    }
-    nameChangeHandler = (event) => {
-      this.setState({persons: [
-        {name: 'Abebe', age:30},
-        {name:'Tyson', age:35},
-        {name:event.target.value, age:40}
-      ]})
+    nameChangeHandler = (event,id) => {
+      //find person whose state we want to change
+      const personIndex = this.state.persons.findIndex(p => {
+        return p.id === id;
+      });
+      //make a copy of person obj before mutating
+      const person ={...this.state.persons[personIndex]}
+      //const person =  Object.assign({},this.state.persons[personIndex])
+      person.name = event.target.value ;  //assign value from input to targetted person name
+      
+      // make an update to particular person
+      const persons = [...this.state.persons];
+      persons[personIndex] = person;
+      this.setState({persons: persons});
     }
     togglePersonHandler =() =>{
       const doesShow = this.state.showPersons;
@@ -49,6 +57,7 @@ class App extends Component {
                       name= {person.name}
                        age={person.age}
                        key={person.id}
+                       changed={(event)=>{this.nameChangeHandler(event, person.id)}}
                       />
             })}
            
