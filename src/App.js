@@ -10,7 +10,8 @@ class App extends Component {
        {id: '3',name:'Kenna', age:25}
      ],
      otherState : 'Some other value',
-     showPersons : false
+     showPersons : false,
+     inputLength : ''
    }
    deletePersonHandler = (personIndex)=>{
       //always make a copy before mutating to avoid sideEffects
@@ -38,6 +39,10 @@ class App extends Component {
     togglePersonHandler =() =>{
       const doesShow = this.state.showPersons;
       this.setState({showPersons : !doesShow});
+    }
+    inputLengthHandler =(e)=>{
+      let textTyped = e.target.value;
+      this.setState({ inputLength : textTyped.length}) 
     }
   render() {
      const style ={
@@ -74,7 +79,14 @@ class App extends Component {
          Toggle Name
          </button>
            {persons}
-         
+           <p>
+
+         <br/>
+           </p>
+         {/* Create an input field with change listener which outputs the length
+         of the entered text below it (eg in a paragraph) */}
+         <input onChange={this.inputLengthHandler}/>
+    <p>{this.state.inputLength}</p>
       </div>
     );
   }
