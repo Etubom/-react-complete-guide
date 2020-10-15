@@ -1,6 +1,9 @@
 import React, { Component, useState } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import ValidationComponent from './ValidationComponent/ValidationComponent';
+import CharComponent from './CharComponent/CharComponent';
+import charComponent from './CharComponent/CharComponent';
 
 class App extends Component {
    state={
@@ -11,6 +14,7 @@ class App extends Component {
      ],
      otherState : 'Some other value',
      showPersons : false,
+     textValue : '',
      inputLength : ''
    }
    deletePersonHandler = (personIndex)=>{
@@ -40,8 +44,9 @@ class App extends Component {
       const doesShow = this.state.showPersons;
       this.setState({showPersons : !doesShow});
     }
-    inputLengthHandler =(e)=>{
+    inputHandler =(e)=>{
       let textTyped = e.target.value;
+      this.setState({textValue : textTyped})
       this.setState({ inputLength : textTyped.length}) 
     }
   render() {
@@ -69,6 +74,23 @@ class App extends Component {
          </div> 
         )
      }
+     let charComponents = null;
+     if(this.state.textValue){
+       let textValues = this.state.textValue.split('')
+       charComponents=(
+         <div>
+           {
+             textValues.map((item,i)=>{
+               return <CharComponent
+                        inputValue ={item}
+                        style ={{display:'inline-block',padding:'16px',textAlign:'center',margin:'16px',border:'1px solid black'}}
+
+                      />
+             })
+           }
+         </div>
+       )
+     }
     return (
       <div className="App">
        <h1>Hi,This is a react app.</h1>
@@ -85,8 +107,12 @@ class App extends Component {
            </p>
          {/* Create an input field with change listener which outputs the length
          of the entered text below it (eg in a paragraph) */}
-         <input onChange={this.inputLengthHandler}/>
-    <p>{this.state.inputLength}</p>
+         <input onChange={this.inputHandler}/>
+        <p>{this.state.inputLength}</p>
+       <ValidationComponent
+       inputLength={this.state.inputLength}
+       />
+       {charComponents}
       </div>
     );
   }
